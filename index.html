@@ -50,26 +50,30 @@
     /* Kotak statistik */
     .stats-wrapper {
       display: flex;
-      gap: 15px;
       justify-content: center;
+      align-items: stretch;
       margin-bottom: 25px;
-      flex-wrap: wrap;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
     }
 
     .stats {
-      flex: 1;
-      min-width: 200px;
+      flex: 0 0 50%; /* selalu 2 kolom */
+      max-width: 50%;
       background: linear-gradient(135deg, #FFD700, #FFA500);
       color: #111;
-      padding: 15px;
-      border-radius: 15px;
-      box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+      padding: 20px 10px;
       font-size: 1.1rem;
       font-weight: bold;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
+    }
+
+    .stats + .stats {
+      border-left: 2px solid rgba(0,0,0,0.2); /* garis pemisah */
     }
 
     .stats span {
@@ -133,10 +137,10 @@
       }
       .stats {
         font-size: 1rem;
-        padding: 12px;
+        padding: 15px 5px;
       }
       .stats span {
-        font-size: 1.2rem;
+        font-size: 1.1rem;
       }
     }
   </style>
