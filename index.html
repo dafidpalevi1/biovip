@@ -24,7 +24,7 @@
     }
 
     .container {
-      max-width: 480px;
+      max-width: 520px;
       width: 100%;
       text-align: center;
       flex: 1;
@@ -47,16 +47,50 @@
       font-size: 1.8rem;
     }
 
+    /* Kotak statistik */
+    .stats-wrapper {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      margin-bottom: 25px;
+      flex-wrap: wrap;
+    }
+
+    .stats {
+      flex: 1;
+      min-width: 200px;
+      background: linear-gradient(135deg, #FFD700, #FFA500);
+      color: #111;
+      padding: 15px;
+      border-radius: 15px;
+      box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+      font-size: 1.1rem;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .stats span {
+      font-size: 1.3rem;
+      color: #000;
+    }
+
+    .stats .icon {
+      font-size: 1.4rem;
+    }
+
     .links {
       display: flex;
       flex-direction: column;
       gap: 15px;
-      margin-bottom: 40px; /* beri jarak sebelum footer */
+      margin-bottom: 40px;
     }
 
     .link-item {
       background: yellow;
-      color: #111; /* teks hitam biar kontras */
+      color: #111;
       padding: 15px;
       border-radius: 10px;
       font-size: 1.1rem;
@@ -66,7 +100,7 @@
     }
 
     .link-item:hover {
-      background: #ffcc00; /* kuning lebih gelap saat hover */
+      background: #ffcc00;
       transform: scale(1.05);
     }
 
@@ -97,6 +131,13 @@
         font-size: 1rem;
         padding: 12px;
       }
+      .stats {
+        font-size: 1rem;
+        padding: 12px;
+      }
+      .stats span {
+        font-size: 1.2rem;
+      }
     }
   </style>
 </head>
@@ -108,6 +149,18 @@
       <p>@vip_agency</p>
     </div>
 
+    <!-- Dua menu statistik sejajar -->
+    <div class="stats-wrapper">
+      <div class="stats">
+        <div class="icon">🎵</div>
+        <div>Kreator: <span id="jumlahKreator">311+</span></div>
+      </div>
+      <div class="stats">
+        <div class="icon">🏆</div>
+        <div>Sub Agency: <span id="jumlahSub">17+</span></div>
+      </div>
+    </div>
+
     <div class="links">
       <a href="https://www.tiktok.com/link/v2?aid=1988&lang=en&scene=bio_url&target=https%3A%2F%2Fwww.tiktok.com%2Ft%2FZMhhYfPCA%2F" class="link-item" target="_blank">Gabung Agency</a>
       <a href="https://logovip.netlify.app/" class="link-item" target="_blank">Logo VIP Agency</a>
@@ -115,6 +168,7 @@
       <a href="https://vt.tiktok.com/ZSHW2bpqedEyd-1CfsJ/" class="link-item" target="_blank">Tutorial Tiktok</a>
       <a href="https://www.tiktok.com/@vip_agency" class="link-item" target="_blank">Akun TikTok</a>
       <a href="https://vipagency.netlify.app/" class="link-item" target="_blank">Website</a>
+      <a href="https://wa.me/6285333630997" class="link-item" target="_blank">Admin PK</a>
     </div>
   </div>
 
@@ -123,12 +177,9 @@
   </footer>
 
   <script>
-    const links = document.querySelectorAll('.link-item');
-    links.forEach(link => {
-      link.addEventListener('click', () => {
-        console.log(`Menuju ke: ${link.textContent}`);
-      });
-    });
+    const jumlah = document.getElementById('jumlahKreator');
+    const sub = document.getElementById('jumlahSub');
+    console.log("Jumlah kreator:", jumlah.textContent, "| Sub Agency:", sub.textContent);
   </script>
 </body>
 </html>
