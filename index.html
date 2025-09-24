@@ -1,58 +1,77 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VIP Agency - TikTok API Demo</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>VIP Agency</title>
   <style>
     body {
+      font-family: Arial, sans-serif;
       background: #111;
       color: white;
-      font-family: Arial, sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
       text-align: center;
+      padding: 20px;
     }
     .profile img {
       width: 120px;
-      height: 120px;
       border-radius: 50%;
-      border: 3px solid yellow;
-      object-fit: cover;
-      margin-bottom: 15px;
+      border: 3px solid #FFD700;
     }
-    .loading {
-      color: yellow;
+    .links {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .link-item {
+      background: yellow;
+      color: #111;
+      padding: 12px;
+      border-radius: 10px;
+      font-weight: bold;
+      text-decoration: none;
+    }
+    .stats {
+      margin-top: 20px;
+      background: linear-gradient(135deg, #FFD700, #FFA500);
+      color: #000;
+      padding: 15px;
+      border-radius: 10px;
+      display: inline-block;
     }
   </style>
 </head>
 <body>
   <div class="profile">
-    <img id="avatar" src="" alt="Avatar">
-    <h1 id="nama">Memuat...</h1>
-    <p id="openId"></p>
+    <img src="images/vip.png" alt="Profile"/>
+    <h1 id="displayName">VIP_Agency</h1>
+    <p id="username">@vip_agency</p>
   </div>
 
-  <p class="loading" id="loading">🔄 Sedang mengambil data TikTok...</p>
+  <div class="links">
+    <a href="https://www.tiktok.com/@vip_agency" target="_blank" class="link-item">Akun TikTok</a>
+    <a href="https://wa.me/6285333630997" target="_blank" class="link-item">Hubungi Admin</a>
+  </div>
+
+  <div class="stats" id="tiktokStats">Loading data TikTok...</div>
 
   <script>
-    fetch("/.netlify/functions/tiktok")
-      .then(res => res.json())
-      .then(data => {
-        document.getElementById("loading").style.display = "none";
-        const user = data.data.user;
-
-        document.getElementById("nama").innerText = user.display_name;
-        document.getElementById("avatar").src = user.avatar_url;
-        document.getElementById("openId").innerText = "Open ID: " + user.open_id;
-      })
-      .catch(err => {
-        document.getElementById("loading").innerText = "❌ Gagal ambil data TikTok";
-        console.error(err);
-      });
+    async function fetchTikTok() {
+      try {
+        const res = await fetch("/.netlify/functions/tiktok");
+        const data = await res.json();
+        if (data.data && data.data.user) {
+          document.getElementById("displayName").textContent = data.data.user.display_name;
+          document.getElementById("username").textContent = "@" + data.data.user.open_id;
+          document.getElementById("tiktokStats").textContent = "ID: " + data.data.user.union_id;
+        } else {
+          document.getElementById("tiktokStats").textContent = "Gagal ambil data TikTok";
+        }
+      } catch (e) {
+        document.getElementById("tiktokStats").textContent = "Error: " + e.message;
+      }
+    }
+    fetchTikTok();
   </script>
 </body>
 </html>
