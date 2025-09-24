@@ -3,65 +3,56 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TikTok API - VIP Agency</title>
+  <title>VIP Agency - TikTok API Demo</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
       background: #111;
       color: white;
+      font-family: Arial, sans-serif;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       min-height: 100vh;
-      margin: 0;
-    }
-    .profile {
       text-align: center;
     }
     .profile img {
       width: 120px;
       height: 120px;
       border-radius: 50%;
-      border: 3px solid gold;
+      border: 3px solid yellow;
+      object-fit: cover;
+      margin-bottom: 15px;
     }
-    .profile h1 {
-      margin: 10px 0;
-      font-size: 1.5rem;
-    }
-    .profile p {
-      color: #ccc;
+    .loading {
+      color: yellow;
     }
   </style>
 </head>
 <body>
   <div class="profile">
     <img id="avatar" src="" alt="Avatar">
-    <h1 id="displayName">Loading...</h1>
+    <h1 id="nama">Memuat...</h1>
     <p id="openId"></p>
   </div>
 
+  <p class="loading" id="loading">🔄 Sedang mengambil data TikTok...</p>
+
   <script>
-    async function loadTikTok() {
-      try {
-        const res = await fetch("/.netlify/functions/tiktok");
-        const json = await res.json();
-        console.log(json);
+    fetch("/.netlify/functions/tiktok")
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById("loading").style.display = "none";
+        const user = data.data.user;
 
-        const user = json.data?.user;
-
-        if (user) {
-          document.getElementById("avatar").src = user.avatar_url;
-          document.getElementById("displayName").textContent = user.display_name;
-          document.getElementById("openId").textContent = `Open ID: ${user.open_id}`;
-        } else {
-          document.getElementById("displayName").textContent = "Gagal ambil data!";
-        }
-      } catch (e) {
-        document.getElementById("displayName").textContent = "Error: " + e.message;
-      }
-    }
-    loadTikTok();
+        document.getElementById("nama").innerText = user.display_name;
+        document.getElementById("avatar").src = user.avatar_url;
+        document.getElementById("openId").innerText = "Open ID: " + user.open_id;
+      })
+      .catch(err => {
+        document.getElementById("loading").innerText = "❌ Gagal ambil data TikTok";
+        console.error(err);
+      });
   </script>
 </body>
 </html>
