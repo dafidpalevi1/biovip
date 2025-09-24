@@ -1,77 +1,52 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>VIP Agency</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #111;
-      color: white;
-      text-align: center;
-      padding: 20px;
-    }
-    .profile img {
-      width: 120px;
-      border-radius: 50%;
-      border: 3px solid #FFD700;
-    }
-    .links {
-      margin-top: 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-    .link-item {
-      background: yellow;
-      color: #111;
-      padding: 12px;
-      border-radius: 10px;
-      font-weight: bold;
-      text-decoration: none;
-    }
-    .stats {
-      margin-top: 20px;
-      background: linear-gradient(135deg, #FFD700, #FFA500);
-      color: #000;
-      padding: 15px;
-      border-radius: 10px;
-      display: inline-block;
-    }
-  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VIP Agency TikTok</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="profile">
-    <img src="images/vip.png" alt="Profile"/>
-    <h1 id="displayName">VIP_Agency</h1>
-    <p id="username">@vip_agency</p>
-  </div>
+  <div class="container">
+    <h1>VIP Agency TikTok</h1>
+    <button id="loginBtn">Login dengan TikTok</button>
 
-  <div class="links">
-    <a href="https://www.tiktok.com/@vip_agency" target="_blank" class="link-item">Akun TikTok</a>
-    <a href="https://wa.me/6285333630997" target="_blank" class="link-item">Hubungi Admin</a>
+    <div id="profile" class="hidden">
+      <img id="avatar" src="" alt="Avatar">
+      <h2 id="name"></h2>
+      <p><strong>OpenID:</strong> <span id="openId"></span></p>
+    </div>
   </div>
-
-  <div class="stats" id="tiktokStats">Loading data TikTok...</div>
 
   <script>
-    async function fetchTikTok() {
+    const loginBtn = document.getElementById("loginBtn");
+    const profileDiv = document.getElementById("profile");
+
+    loginBtn.addEventListener("click", () => {
+      // Redirect ke auth function (OAuth TikTok)
+      window.location.href = "/.netlify/functions/auth";
+    });
+
+    // Jika ada token di URL hash, panggil function untuk ambil data user
+    async function getUserData() {
       try {
         const res = await fetch("/.netlify/functions/tiktok");
         const data = await res.json();
-        if (data.data && data.data.user) {
-          document.getElementById("displayName").textContent = data.data.user.display_name;
-          document.getElementById("username").textContent = "@" + data.data.user.open_id;
-          document.getElementById("tiktokStats").textContent = "ID: " + data.data.user.union_id;
+        if (data.user) {
+          document.getElementById("avatar").src = data.user.avatar_url;
+          document.getElementById("name").textContent = data.user.display_name;
+          document.getElementById("openId").textContent = data.user.open_id;
+          profileDiv.classList.remove("hidden");
+          loginBtn.style.display = "none";
         } else {
-          document.getElementById("tiktokStats").textContent = "Gagal ambil data TikTok";
+          console.log("Belum login:", data);
         }
-      } catch (e) {
-        document.getElementById("tiktokStats").textContent = "Error: " + e.message;
+      } catch (err) {
+        console.error("Gagal ambil data:", err);
       }
     }
-    fetchTikTok();
+
+    getUserData();
   </script>
 </body>
 </html>
